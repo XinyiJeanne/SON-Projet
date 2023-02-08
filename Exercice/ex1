@@ -1,0 +1,30 @@
+//MIDI Tune
+
+#include <Audio.h>
+#include "MyDsp.h"
+
+MyDsp myDsp;
+AudioOutputI2S out;
+AudioControlSGTL5000 audioShield;
+AudioConnection patchCord0(myDsp,0,out,0);
+AudioConnection patchCord1(myDsp,0,out,1);
+
+void setup() {
+  AudioMemory(2);
+  audioShield.enable();
+  audioShield.volume(0.5);
+}
+
+void loop() {
+  const int MIDI_notes[] =  {76,75,76,75,76,70,74,72,68};
+ 
+  for (int i = 0; i < 9; i++) {
+      
+      int d = MIDI_notes[i];
+      double f = pow(2, (d - 69) / 12.0) * 440.0;
+      myDsp.setFreq(f);
+      delay(500); 
+  //myDsp.setFreq(random(50,1000));
+  //delay(100);
+  }
+}
