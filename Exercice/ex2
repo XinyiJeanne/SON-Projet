@@ -1,4 +1,4 @@
-//Additive Synthesis
+//Additive Synthesis sine,cpp
 #include <cmath>
 
 #include "Sine.h"
@@ -24,11 +24,7 @@ float Sine::tick(){
   //return sineTable.tick(index)*gain;
   int index=phasor.tick()*SINE_TABLE_SIZE;
   int index1=(int) (index*1.5)%SINE_TABLE_SIZE;
-  float currentSample = sineTable.tick(index)*gain + sineTable.tick(index1)*gain;
-  if (currentSample>1){
-    currentSample=1;
-  }
-  if (currentSample<-1){
-    currentSample=1;
-  }
+  float currentSample = sineTable.tick(index)*gain*0.5 + sineTable.tick(index1)*gain*0.5;
+  return currentSample;
+
 }
