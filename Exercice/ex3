@@ -1,0 +1,36 @@
+//echo
+In MyDsp.h:
+
+  Sine sine;
+  Echo echo0, echo1;
+};
+
+
+In MyDsp.cpp:
+
+MyDsp::MyDsp() :
+AudioStream(AUDIO_OUTPUTS, new audio_block_t*[AUDIO_OUTPUTS]),
+sine(AUDIO_SAMPLE_RATE_EXACT),
+echo0(AUDIO_SAMPLE_RATE_EXACT,10000),
+echo1(AUDIO_SAMPLE_RATE_EXACT,7000)
+{
+
+...
+
+// setting up DSP objects
+echo0.setDel(10000);
+echo0.setFeedback(0.5);
+echo1.setDel(7000);
+echo1.setFeedback(0.4);
+
+...
+
+// processing buffers
+for (int i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
+  // DSP
+  float sineSample = sine.tick();
+  float currentSampleL = echo0.tick(sineSample)*0.5;
+  float currentSampleR = echo1.tick(sineSample)*0.5;
+
+  ...
+}
