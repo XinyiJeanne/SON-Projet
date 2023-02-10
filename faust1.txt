@@ -1,0 +1,14 @@
+import("stdfaust.lib");
+//process=no.noise
+
+gain=hslider("gain",0.1,0,1,0.01);
+freq = hslider("freq",50,30,8000,1);
+
+lfreq=hslider("lfreq",0.01,0, 5,0.1);
+lfo=os.lf_triangle(lfreq)*0.5+0.5;
+lrange=hslider("lrange",30,10,5000,1);
+process=os.sawtooth(freq),gain : * : fi.resonlp(lrange*lfo+50,5,1) : echo;
+
+//Echo
+echo_gain=hslider("echogain",0.1,0,0.99,0.01);
+echo=+~(@(10000),echo_gain:*);
